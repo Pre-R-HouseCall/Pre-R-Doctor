@@ -10,7 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 @implementation Patient
 
--(id) initWithLongLat: (NSString *) patID andEmail: (NSString *) patEmail andName: (NSString *) patName andTag: (NSString *) patTag andPhone: (NSString *) patPhone andDate: (NSString *) patDateTime andLat: (NSString *) patLat andLong: (NSString *) patLong {
+-(id) init1: (NSString *) patID andEmail: (NSString *) patEmail andName: (NSString *) patName andTag: (NSString *) patTag andPhone: (NSString *) patPhone andDate: (NSString *) patDateTime andLat: (NSString *) patLat andLong: (NSString *) patLong {
     self = [super init];
     if(self) {
         self.patID = patID;
@@ -26,7 +26,7 @@
     return self;
 }
 
--(id) initWithStreet: (NSString *) patID andEmail: (NSString *) patEmail andName: (NSString *) patName andTag: (NSString *) patTag andPhone: (NSString *) patPhone andDate: (NSString *) patDateTime andState: (NSString *) patState andCity: (NSString *) patCity andStreet: (NSString *) patStreet andZip: (NSString *) patZip {
+-(id) init2: (NSString *) patID andEmail: (NSString *) patEmail andName: (NSString *) patName andTag: (NSString *) patTag andPhone: (NSString *) patPhone andDate: (NSString *) patDateTime andState: (NSString *) patState andCity: (NSString *) patCity andStreet: (NSString *) patStreet andZip: (NSString *) patZip {
   
     self = [super init];
     if(self) {
@@ -45,6 +45,7 @@
                      {
                          self.patLat = [NSString stringWithFormat:@"%lf" , aPlacemark.location.coordinate.latitude];
                          self.patLong = [NSString stringWithFormat:@"%lf", aPlacemark.location.coordinate.longitude];
+                         NSLog([NSString stringWithFormat:@"from geo %f from geo %f", aPlacemark.location.coordinate.latitude, aPlacemark.location.coordinate.longitude]);
                      }
                  }];
      return self;

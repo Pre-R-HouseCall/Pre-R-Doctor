@@ -74,7 +74,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1679" y="881"/>
+            <point key="canvasLocation" x="1679" y="814"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="q2X-DN-8Dx">
@@ -92,12 +92,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CNs-W6-36B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="933" y="881"/>
+            <point key="canvasLocation" x="937" y="814"/>
         </scene>
-        <!--Title-->
+        <!--HomeScreenController-->
         <scene sceneID="ROC-d0-N5Z">
             <objects>
-                <viewController storyboardIdentifier="homescreen" id="f0Y-wP-kch" customClass="HomeScreenController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="homescreen" id="f0Y-wP-kch" userLabel="HomeScreenController" customClass="HomeScreenController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="FgS-L0-JRj"/>
                         <viewControllerLayoutGuide type="bottom" id="6bq-pL-Ikx"/>
@@ -118,24 +118,65 @@
                                     <action selector="availChanged:" destination="f0Y-wP-kch" eventType="valueChanged" id="jrb-MG-RyU"/>
                                 </connections>
                             </segmentedControl>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="72" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="fR2-ob-bh3">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="72" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="fR2-ob-bh3">
                                 <rect key="frame" x="0.0" y="94" width="600" height="506"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="72" id="qNC-Mf-ame">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="patientCell" rowHeight="72" id="qNC-Mf-ame" customClass="PatientCell">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qNC-Mf-ame" id="HbP-cE-t7j">
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ugl-mz-W51">
+                                                    <rect key="frame" x="8" y="40" width="261" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rMU-y6-9NC">
+                                                    <rect key="frame" x="295" y="28" width="276" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B4T-0U-UVX">
+                                                    <rect key="frame" x="8" y="11" width="261" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="rMU-y6-9NC" firstAttribute="leading" secondItem="ugl-mz-W51" secondAttribute="trailing" constant="26" id="7hn-nW-Rrk"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="rMU-y6-9NC" secondAttribute="trailing" constant="21" id="9cq-78-apb"/>
+                                                <constraint firstItem="rMU-y6-9NC" firstAttribute="top" secondItem="HbP-cE-t7j" secondAttribute="topMargin" constant="18" id="Ta0-ky-SWe"/>
+                                                <constraint firstItem="ugl-mz-W51" firstAttribute="top" secondItem="B4T-0U-UVX" secondAttribute="bottom" constant="8" id="cuo-9a-bcQ"/>
+                                                <constraint firstItem="rMU-y6-9NC" firstAttribute="leading" secondItem="B4T-0U-UVX" secondAttribute="trailing" constant="26" id="ine-zd-D7e"/>
+                                                <constraint firstItem="B4T-0U-UVX" firstAttribute="leading" secondItem="HbP-cE-t7j" secondAttribute="leadingMargin" id="mdj-Z2-Pe8"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="rMU-y6-9NC" secondAttribute="bottom" constant="15" id="vRQ-Fy-5Fi"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="patientDistance" destination="rMU-y6-9NC" id="n1O-Yg-05m"/>
+                                            <outlet property="patientName" destination="B4T-0U-UVX" id="3a0-sQ-e1b"/>
+                                            <outlet property="patientTag" destination="ugl-mz-W51" id="CbZ-Ru-4pz"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="f0Y-wP-kch" id="T4F-Bk-64L"/>
+                                    <outlet property="delegate" destination="f0Y-wP-kch" id="yxg-L7-qZg"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="LCE-ep-Bp2" firstAttribute="leading" secondItem="jDF-mR-888" secondAttribute="leadingMargin" id="Btz-rr-fCd"/>
+                            <constraint firstItem="fR2-ob-bh3" firstAttribute="leading" secondItem="jDF-mR-888" secondAttribute="leadingMargin" constant="-16" id="G3e-Hu-nbD"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="fR2-ob-bh3" secondAttribute="trailing" constant="-16" id="WWP-bT-aIo"/>
                             <constraint firstItem="LCE-ep-Bp2" firstAttribute="trailing" secondItem="jDF-mR-888" secondAttribute="trailingMargin" id="tUJ-aQ-KAQ"/>
+                            <constraint firstItem="6bq-pL-Ikx" firstAttribute="top" secondItem="fR2-ob-bh3" secondAttribute="bottom" id="vsB-zx-pcA"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="Sw8-7R-9zj">
@@ -144,11 +185,12 @@
                     </navigationItem>
                     <connections>
                         <outlet property="availControl" destination="LCE-ep-Bp2" id="4yV-3g-w4u"/>
+                        <outlet property="tableView" destination="fR2-ob-bh3" id="iqi-QE-NnK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hLh-aD-REp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1679" y="1569"/>
+            <point key="canvasLocation" x="1679" y="1561"/>
         </scene>
     </scenes>
 </document>

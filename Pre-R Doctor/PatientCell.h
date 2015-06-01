@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface PatientCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIButton *buttonToForm;
-@property (weak, nonatomic) IBOutlet UILabel *patientName;
-@property (weak, nonatomic) IBOutlet UILabel *patientDistance;
-@property (strong, nonatomic) IBOutlet UILabel *descriptionLabel;
-@property (strong, nonatomic) IBOutlet UILabel *tag;
+@property (strong, nonatomic) IBOutlet UILabel *patientName;
+@property (strong, nonatomic) IBOutlet UILabel *patientTag;
+@property (strong, nonatomic) IBOutlet UILabel *patientDistance;
+
 @end

@@ -11,12 +11,14 @@
 #import "PatientCell.h"
 #import "User.h"
 
-
+#define getDataURL  @"http://54.191.98.90/api/1.0/getPatients/"
 
 @interface HomeScreenController()<CLLocationManagerDelegate>
 @property (strong, nonatomic) IBOutlet UISegmentedControl *availControl;
 @property (nonatomic) User* user;
 @property (nonatomic, retain) CLLocationManager *locationManager;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) UIRefreshControl* refreshControl;
 
 @end
 
@@ -44,12 +46,22 @@
 }
 
 -(void)viewDidLoad {
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     [self.locationManager requestWhenInUseAuthorization];
     self.locationManager.distanceFilter = 610;
     self.availControl.selectedSegmentIndex = [defaults objectForKey:@"Availability"];
+    
+    UITableViewController *tableViewController = [[UITableViewController alloc] init];
+    tableViewController.tableView = self.tableView;
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(getConnections) forControlEvents:UIControlEventValueChanged];
+    tableViewController.refreshControl = self.refreshControl;
+    [self retrieveData];
+    
 }
 
 - (IBAction)availChanged:(id *)sender {
@@ -61,6 +73,7 @@
     [alert addAction:cancelAction];
     [alert addAction:defaultAction];
     [self presentViewController:alert animated:YES completion:nil];
+    
     if(value == 0) {
         //if([CLLocationManager authorizationStatus])
         //if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
@@ -83,7 +96,6 @@
     //This method will show us that we recieved the new location
     NSLog(@"Latitude = %f",newLocation.coordinate.latitude );
     NSLog(@"Longitude =%f",newLocation.coordinate.longitude);
-    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -94,15 +106,23 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     PatientCell *PatientCell = [tableView dequeueReusableCellWithIdentifier:@"patientCell"];
     Patient* temppatient = [self.formArray objectAtIndex:indexPath.row];
+    NSInteger docLat = self.locationManager.location.coordinate.latitude;
+    NSInteger docLong = self.locationManager.location.coordinate.longitude;
+    CLLocation * docLoc = [[CLLocation alloc] initWithLatitude:docLat longitude:docLong];
+    NSLog([NSString stringWithFormat:@"LAT IS %f and LONG IS %f", temppatient.patLat, temppatient.patLong]);
+    CLLocation * patientLoc = [[CLLocation alloc] initWithLatitude:temppatient.patLat.integerValue longitude:temppatient.patLong.integerValue];
+    CLLocationDistance meters = [docLoc distanceFromLocation:patientLoc];
     
     if (temppatient) {
         PatientCell.patientName.text  = temppatient.patName;
+        PatientCell.patientDistance.text = [NSString stringWithFormat:@"%f miles away", meters * .000621371];
+        //PatientCell.patientTag.text = temppatient.patTag;
         //gecode compute latitiude and longitude
         //PatientCell.patientDistance.text = temppatient.patDistance;
     }
-    PatientCell.descriptionLabel.text = temppatient.patDescription;
-    PatientCell.buttonToForm.tag = indexPath.row;
-    [PatientCell.buttonToForm addTarget:self action:@selector(formButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    //PatientCell.descriptionLabel.text = temppatient.patDescription;
+    //PatientCell.buttonToForm.tag = indexPath.row;
+    //[PatientCell.buttonToForm addTarget:self action:@selector(formButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     return PatientCell;
 }
 
@@ -110,30 +130,46 @@
     
 }
 
-/*-(void) retrieveData {
-    NSURL * url = [NSURL URLWithString:getDataURL];
+-(void) retrieveData {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *id = [defaults objectForKey:@"ID"];
+    NSString *newurl = [NSString stringWithFormat:@"%@%@", getDataURL, id];
+    NSLog(newurl);
+    NSURL * url = [NSURL URLWithString:newurl];
     NSData * data = [NSData dataWithContentsOfURL:url];
     self.jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
     
-    self.doctorArray = [[NSMutableArray alloc] init];
-    for(int i = 0; i < self.jsonArray.count - 1; i++) {
-        NSString * dID = [[self.jsonArray objectAtIndex:i] objectForKey:@"DoctorId"];
-        NSString * dFirstname = [[self.jsonArray objectAtIndex:i] objectForKey:@"FirstName"];
-        NSString * dLastname = [[self.jsonArray objectAtIndex:i] objectForKey:@"LastName"];
-        NSString * dUsername = [[self.jsonArray objectAtIndex:i] objectForKey:@"Username"];
-        NSString * dAvailable = [[self.jsonArray objectAtIndex:i] objectForKey:@"Availability"];
-        NSString * dDistance = [[self.jsonArray objectAtIndex:i] objectForKey:@"Distance"];
-        NSString * dDescription = [[self.jsonArray objectAtIndex:i] objectForKey:@"Description"];
-        NSString * dImage = [[self.jsonArray objectAtIndex:i] objectForKey:@"ProfileImage"];
+    self.formArray = [[NSMutableArray alloc] init];
+    for(int i = 0; i < self.jsonArray.count ; i++) {
+        NSString * uid = [[self.jsonArray objectAtIndex:i] objectForKey:@"UserId"];
+        NSString * uName = [[self.jsonArray objectAtIndex:i] objectForKey:@"Name"];
+        NSString *  uEmail= [[self.jsonArray objectAtIndex:i] objectForKey:@"Email"];
+        NSString * uNumber = [[self.jsonArray objectAtIndex:i] objectForKey:@"Number"];
+        NSString * uSymptoms = [[self.jsonArray objectAtIndex:i] objectForKey:@"Symptoms"];
+        NSString * uLatitude = [[self.jsonArray objectAtIndex:i] objectForKey:@"Latitude"];
+        NSString * uLongitude = [[self.jsonArray objectAtIndex:i] objectForKey:@"Longitude"];
+        NSString * uStreetAddress = [[self.jsonArray objectAtIndex:i] objectForKey:@"StreetAddress"];
+        NSString * uCity = [[self.jsonArray objectAtIndex:i] objectForKey:@"City"];
+        NSString * uState = [[self.jsonArray objectAtIndex:i] objectForKey:@"State"];
+        NSString * uZip = [[self.jsonArray objectAtIndex:i] objectForKey:@"Zip"];
+        NSString * uDateTime = [[self.jsonArray objectAtIndex:i] objectForKey:@"DateTime"];
+        NSString * uTag = [[self.jsonArray objectAtIndex:i] objectForKey:@"Tag"];
         
-        [self.doctorArray addObject:[[Doctors alloc] initWithDoctorName: dID andUsername:dUsername andFirstname:dFirstname andLastname:dLastname andAvailablity:dAvailable andDistance:dDistance andImage:dImage andDesc:dDescription]];
-        
+        if(uLatitude) {
+            [self.formArray addObject:[[Patient alloc] init2:uid andEmail:uEmail andName:uName andTag:uTag andPhone:uNumber andDate:uDateTime andState:uState andCity:uCity andStreet:uStreetAddress andZip:uZip]];
+            NSLog(@"Entered address init");
+            Patient * pat1 = [self.formArray objectAtIndex:0];
+            NSLog([NSString stringWithFormat:@"after init %@", pat1.patLong]);
+        } else {
+            [self.formArray addObject:[[Patient alloc] init1:uid andEmail:uEmail andName:uName andTag:uTag andPhone:uNumber andDate:uDateTime andLat:uLatitude andLong:uLongitude]];
+            NSLog(@"Entered latlong init");
+         }
     }
-    if (self.refreshControl) {
-        [self.refreshControl endRefreshing];
-    }
-    [self.tableView reloadData];
-}*/
+//    if (self.refreshControl) {
+  //      [self.refreshControl endRefreshing];
+  //  }
+   [self.tableView reloadData];
+}
 
 
 

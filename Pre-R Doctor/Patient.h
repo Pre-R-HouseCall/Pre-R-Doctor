@@ -23,9 +23,9 @@
 @property (strong, nonatomic) NSString * patState;
 @property (strong, nonatomic) NSString * patZip;
 @property (strong, nonatomic) NSString * patDateTime;
--(id) initWithLongLat: (NSString *) patID andEmail: (NSString *) patEmail andName: (NSString *) patName andTag: (NSString *) patTag andPhone: (NSString *) patPhone andDate: (NSString *) patDateTime andLat: (NSString *) patLat andLong: (NSString *) patLong;
+-(id) init1: (NSString *) patID andEmail: (NSString *) patEmail andName: (NSString *) patName andTag: (NSString *) patTag andPhone: (NSString *) patPhone andDate: (NSString *) patDateTime andLat: (NSString *) patLat andLong: (NSString *) patLong;
 
--(id) initWithStreet: (NSString *) patID andEmail: (NSString *) patEmail andName: (NSString *) patName andTag: (NSString *) patTag andPhone: (NSString *) patPhone andDate: (NSString *) patDateTime andState: (NSString *) patState andCity: (NSString *) patCity andStreet: (NSString *) patStreet andZip: (NSString *) patZip;
+-(id) init2: (NSString *) patID andEmail: (NSString *) patEmail andName: (NSString *) patName andTag: (NSString *) patTag andPhone: (NSString *) patPhone andDate: (NSString *) patDateTime andState: (NSString *) patState andCity: (NSString *) patCity andStreet: (NSString *) patStreet andZip: (NSString *) patZip;
 
 //reverseGeocoding
 //variables from destination to destination (CLLocationcoordinate2D)
